@@ -7,6 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:ci": "ng test --watch=false",
     "lint": "ng lint",
     "api": "json-server --watch db.json --port 3001",
     "dev": "concurrently -n API,WEB -c magenta,cyan \"npm:api\" \"npm:start\""

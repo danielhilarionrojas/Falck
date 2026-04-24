@@ -1,0 +1,22 @@
+<main class="tasks-page">
+  <header class="tasks-page__header">
+    <h1>Tareas</h1>
+    <p>Administra tus tareas: crea nuevas, edita estados y revisa notas.</p>
+  </header>
+
+  <section class="tasks-page__pane tasks-page__pane--form">
+    <h2>Nueva tarea</h2>
+    @defer (on viewport) {
+      <app-task-form (submitted)="onSubmit($event)" />
+    } @placeholder {
+      <p class="tasks-page__placeholder">Formulario disponible al acercarte...</p>
+    } @loading (minimum 200ms) {
+      <p class="tasks-page__placeholder">Cargando formulario...</p>
+    }
+  </section>
+
+  <section class="tasks-page__pane tasks-page__pane--list">
+    <h2>Listado</h2>
+    <app-task-list />
+  </section>
+</main>
