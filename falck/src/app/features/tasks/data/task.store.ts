@@ -1,4 +1,5 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
+import { Observable, tap } from 'rxjs';
 
 import { ApiError } from '../../../core/errors/api-error';
 import { Task, TaskDraft } from '../../../core/models/task.model';
@@ -32,6 +33,10 @@ export class TaskStore {
 
   readonly isEmpty = computed(() => !this._loading() && this._tasks().length === 0);
 
+  readonly pageNumbers = computed<readonly number[]>(() =>
+    Array.from({ length: this.totalPages() }, (_, i) => i),
+  );
+
   load(): void {
     this._loading.set(true);
     this._error.set(null);
@@ -59,21 +64,26 @@ export class TaskStore {
   }
 
   create(draft: TaskDraft): void {
+    this._error.set(null);
     this.service.create(draft).subscribe({
       next: (task) => this._tasks.update((list) => [...list, task]),
       error: (err: ApiError) => this._error.set(err),
     });
   }
 
-  update(id: Task['id'], patch: Partial<TaskDraft>): void {
-    this.service.update(id, patch).subscribe({
-      next: (updated) =>
-        this._tasks.update((list) => list.map((t) => (t.id === id ? updated : t))),
-      error: (err: ApiError) => this._error.set(err),
-    });
+  update(id: Task['id'], patch: Partial<TaskDraft>): Observable<Task> {
+    this._error.set(null);
+    return this.service.update(id, patch).pipe(
+      tap({
+        next: (updated) =>
+          this._tasks.update((list) => list.map((t) => (t.id === id ? updated : t))),
+        error: (err: ApiError) => this._error.set(err),
+      }),
+    );
   }
 
   remove(id: Task['id']): void {
+    this._error.set(null);
     this.service.remove(id).subscribe({
       next: () => {
         this._tasks.update((list) => list.filter((t) => t.id !== id));
@@ -83,5 +93,9 @@ export class TaskStore {
       },
       error: (err: ApiError) => this._error.set(err),
     });
+  }
+
+  dismissError(): void {
+    this._error.set(null);
   }
 }

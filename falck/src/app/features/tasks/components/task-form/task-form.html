@@ -1,4 +1,11 @@
 <form class="task-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+  <header class="task-form__header">
+    <h2>{{ isEditing() ? 'Editar tarea' : 'Nueva tarea' }}</h2>
+    @if (isEditing()) {
+      <p class="task-form__hint">Editando: <strong>{{ task()?.title }}</strong></p>
+    }
+  </header>
+
   <div class="task-form__field">
     <label for="title">Titulo</label>
     <input id="title" type="text" formControlName="title" autocomplete="off" />
@@ -25,7 +32,7 @@
 
   <fieldset class="task-form__notes" formArrayName="notes">
     <legend>Notas</legend>
-    @for (note of notes.controls; track $index; let i = $index) {
+    @for (note of notes.controls; track note; let i = $index) {
       <div class="task-form__note-row">
         <input
           type="text"
@@ -40,7 +47,7 @@
           (click)="removeNote(i)"
           aria-label="Eliminar nota"
         >
-          -
+          &times;
         </button>
       </div>
       @if (note.touched && note.invalid) {
@@ -54,6 +61,13 @@
   </fieldset>
 
   <div class="task-form__actions">
-    <button type="submit" [disabled]="form.invalid">Crear tarea</button>
+    @if (isEditing()) {
+      <button type="button" class="task-form__btn task-form__btn--ghost" (click)="onCancel()">
+        Cancelar
+      </button>
+    }
+    <button type="submit" class="task-form__btn task-form__btn--primary" [disabled]="form.invalid">
+      {{ isEditing() ? 'Guardar cambios' : 'Crear tarea' }}
+    </button>
   </div>
 </form>

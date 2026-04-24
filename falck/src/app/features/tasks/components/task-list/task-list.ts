@@ -21,7 +21,7 @@ export class TaskListComponent implements OnInit {
   }
 
   protected onToggle(task: Task): void {
-    this.store.update(task.id, { completed: !task.completed });
+    this.store.update(task.id, { completed: !task.completed }).subscribe();
   }
 
   protected onRemove(id: Task['id']): void {

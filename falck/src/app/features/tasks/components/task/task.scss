@@ -1,99 +1,158 @@
 .task {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem;
-  border: 1px solid #d0d7de;
-  border-radius: 8px;
-  background: #fff;
-  transition: opacity 0.15s ease;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.15s, border-color 0.15s, opacity 0.2s;
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--color-border-strong);
+  }
 
   &--completed {
-    opacity: 0.6;
+    opacity: 0.65;
+    background: var(--color-surface-alt);
 
     .task__title {
       text-decoration: line-through;
+      color: var(--color-text-muted);
     }
   }
 
   &__header {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: var(--space-1);
   }
 
   &__title-row {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-3);
+  }
+
+  &__toggle {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
   }
 
   &__title {
     margin: 0;
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 600;
     flex: 1;
+    color: var(--color-text);
   }
 
   &__state {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
-    padding: 0.15rem 0.5rem;
-    border-radius: 999px;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-full);
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    background: #eef1f4;
-    color: #57606a;
+    letter-spacing: 0.05em;
+    background: #e2e8f0;
+    color: #475569;
 
-    &[data-state='active'] { background: #ddf4ff; color: #0969da; }
-    &[data-state='resolved'] { background: #dafbe1; color: #1a7f37; }
-    &[data-state='closed'] { background: #ffebe9; color: #82071e; }
+    &[data-state='new'] { background: #e0e7ff; color: #4338ca; }
+    &[data-state='active'] { background: #dbeafe; color: #1d4ed8; }
+    &[data-state='resolved'] { background: var(--color-success-soft); color: var(--color-success); }
+    &[data-state='closed'] { background: var(--color-danger-soft); color: var(--color-danger); }
   }
 
   &__description {
     margin: 0;
-    color: #57606a;
+    color: var(--color-text-muted);
     font-size: 0.9rem;
   }
 
   &__meta {
     margin: 0;
-    font-size: 0.85rem;
-    color: #57606a;
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    display: flex;
+    gap: var(--space-1);
   }
 
   &__label {
     font-weight: 600;
-    margin-right: 0.25rem;
+    color: var(--color-text);
+  }
+
+  &__notes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
   }
 
   &__notes-toggle {
     background: none;
     border: none;
-    color: #0969da;
-    cursor: pointer;
+    color: var(--color-primary);
     padding: 0;
-    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
     text-align: left;
+    align-self: flex-start;
+
+    &:hover {
+      color: var(--color-primary-hover);
+    }
   }
 
   &__notes-list {
-    margin: 0.5rem 0 0;
-    padding-left: 1.25rem;
+    margin: 0;
+    padding: var(--space-2) var(--space-3) var(--space-2) 1.5rem;
+    background: var(--color-surface-alt);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    color: var(--color-text);
+
+    li {
+      margin: 0.15rem 0;
+    }
   }
 
   &__notes-empty {
-    margin: 0.25rem 0 0;
+    margin: 0;
     font-style: italic;
-    color: #8b949e;
+    color: var(--color-text-subtle);
+    font-size: 0.85rem;
   }
 
   &__actions {
     display: flex;
-    gap: 0.5rem;
+    gap: var(--space-2);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-border);
+
+    button {
+      padding: 0.35rem 0.75rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      color: var(--color-text-muted);
+      transition: all 0.15s;
+
+      &:hover {
+        color: var(--color-text);
+        border-color: var(--color-border-strong);
+      }
+    }
   }
 
-  &__danger {
-    color: #cf222e;
+  &__danger:hover {
+    color: var(--color-danger) !important;
+    border-color: var(--color-danger) !important;
+    background: var(--color-danger-soft) !important;
   }
 }

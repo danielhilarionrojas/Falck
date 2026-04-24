@@ -6,7 +6,7 @@
     "schematicCollections": [
       "angular-eslint"
     ],
-    "analytics": "47af71db-ad27-488c-98b2-09c6dc94eab1"
+    "analytics": false
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -61,6 +61,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "configurations": {
             "production": {
               "buildTarget": "falck:build:production"

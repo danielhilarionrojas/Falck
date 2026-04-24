@@ -19,7 +19,16 @@ export class TaskService {
   }
 
   create(draft: TaskDraft): Observable<Task> {
-    return this.http.post<Task>(`${this.baseUrl}/tasks`, draft);
+    const today = new Date().toISOString().slice(0, 10);
+    const payload: Omit<Task, 'id'> = {
+      title: draft.title,
+      description: draft.description,
+      dueDate: draft.dueDate,
+      notes: [...draft.notes],
+      completed: draft.completed ?? false,
+      stateHistory: [{ state: 'new', date: today }],
+    };
+    return this.http.post<Task>(`${this.baseUrl}/tasks`, payload);
   }
 
   update(id: Task['id'], patch: Partial<TaskDraft>): Observable<Task> {

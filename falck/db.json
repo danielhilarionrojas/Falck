@@ -3,7 +3,7 @@
     {
       "id": "1",
       "title": "Complete Project Proposal",
-      "description": "Prepare and submit the project proposal for approval.",
+      "description": "x",
       "dueDate": "2023-12-15",
       "completed": false,
       "stateHistory": [
@@ -17,13 +17,13 @@
         }
       ],
       "notes": [
-        "Check proposal guidelines",
-        "Include budget estimates"
+        "a",
+        "b"
       ]
     },
     {
       "id": "2",
-      "title": "Design Wireframes",
+      "title": "Daniel test",
       "description": "Create wireframes for the user interface.",
       "dueDate": "2023-12-20",
       "completed": false,
@@ -38,8 +38,7 @@
         }
       ],
       "notes": [
-        "Review design patterns",
-        "Seek feedback from the team"
+        "Review design patterns"
       ]
     },
     {
@@ -125,6 +124,22 @@
         "Coordinate with DevOps for deployment",
         "Monitor performance after deployment"
       ]
+    },
+    {
+      "title": "nanais",
+      "description": "jejeje",
+      "dueDate": "2026-04-18",
+      "notes": [
+        "a"
+      ],
+      "completed": false,
+      "stateHistory": [
+        {
+          "state": "new",
+          "date": "2026-04-24"
+        }
+      ],
+      "id": "SxdQiY1"
     }
   ],
   "states": [

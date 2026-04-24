@@ -24,7 +24,12 @@ interface Mock {
 const setup = (mock: Mock) => {
   TestBed.configureTestingModule({
     imports: [TaskListComponent],
-    providers: [{ provide: TaskService, useValue: { update: () => of(), remove: () => of(void 0), ...mock } }],
+    providers: [
+      {
+        provide: TaskService,
+        useValue: { update: () => of(), remove: () => of(void 0), ...mock },
+      },
+    ],
   });
   return TestBed.createComponent(TaskListComponent);
 };
@@ -43,22 +48,23 @@ describe('TaskListComponent', () => {
     fixture.detectChanges();
     const host = fixture.nativeElement as HTMLElement;
     expect(host.querySelectorAll('app-task').length).toBe(5);
-    expect(host.textContent).toContain('Pagina 1 de 2');
+    expect(host.querySelectorAll('.task-list__pager-btn--num').length).toBe(2);
   });
 
-  it('advances page when next button is clicked', () => {
+  it('advances to the clicked page number', () => {
     const tasks = Array.from({ length: 7 }, (_, i) => makeTask(String(i + 1)));
     const fixture = setup({ getAll: () => of(tasks) });
     fixture.detectChanges();
 
     const host = fixture.nativeElement as HTMLElement;
-    const next = Array.from(host.querySelectorAll('button')).find(
-      (b) => b.textContent?.trim() === 'Siguiente',
-    ) as HTMLButtonElement;
-    next.click();
+    const page2 = Array.from(host.querySelectorAll<HTMLButtonElement>('.task-list__pager-btn--num')).find(
+      (b) => b.textContent?.trim() === '2',
+    );
+    page2?.click();
     fixture.detectChanges();
 
     expect(host.querySelectorAll('app-task').length).toBe(2);
-    expect(host.textContent).toContain('Pagina 2 de 2');
+    const active = host.querySelector('.task-list__pager-btn--num.is-active');
+    expect(active?.textContent?.trim()).toBe('2');
   });
 });

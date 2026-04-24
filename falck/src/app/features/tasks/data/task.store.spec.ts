@@ -127,7 +127,7 @@ describe('TaskStore', () => {
     });
     store.load();
 
-    store.update('2', { title: 'Patched' });
+    store.update('2', { title: 'Patched' }).subscribe();
 
     expect(store.tasks().find((t) => t.id === '2')?.title).toBe('Patched');
   });

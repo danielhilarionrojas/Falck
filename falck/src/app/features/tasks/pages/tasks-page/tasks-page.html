@@ -1,22 +1,29 @@
 <main class="tasks-page">
   <header class="tasks-page__header">
-    <h1>Tareas</h1>
-    <p>Administra tus tareas: crea nuevas, edita estados y revisa notas.</p>
+    <div class="tasks-page__brand">
+      <span class="tasks-page__logo" aria-hidden="true">F</span>
+      <div>
+        <h1>Falck Tasks</h1>
+        <p>Gestiona tu trabajo: crea, edita, completa y organiza tus tareas.</p>
+      </div>
+    </div>
   </header>
 
-  <section class="tasks-page__pane tasks-page__pane--form">
-    <h2>Nueva tarea</h2>
+  <section id="task-form-pane" class="tasks-page__pane tasks-page__pane--form">
     @defer (on viewport) {
-      <app-task-form (submitted)="onSubmit($event)" />
+      <app-task-form
+        [task]="editing()"
+        (submitted)="onSubmit($event)"
+        (cancelled)="onCancel()"
+      />
     } @placeholder {
-      <p class="tasks-page__placeholder">Formulario disponible al acercarte...</p>
+      <p class="tasks-page__placeholder">Formulario cargando al acercarte...</p>
     } @loading (minimum 200ms) {
       <p class="tasks-page__placeholder">Cargando formulario...</p>
     }
   </section>
 
   <section class="tasks-page__pane tasks-page__pane--list">
-    <h2>Listado</h2>
-    <app-task-list />
+    <app-task-list (editRequested)="onEditRequested($event)" />
   </section>
 </main>

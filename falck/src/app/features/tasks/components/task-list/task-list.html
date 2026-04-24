@@ -1,13 +1,26 @@
-<section class="task-list" aria-busy="{{ store.loading() }}">
-  @if (store.loading()) {
-    <p class="task-list__status" role="status">Cargando tareas...</p>
-  } @else if (store.error(); as err) {
-    <p class="task-list__status task-list__status--error" role="alert">
-      Error {{ err.status }}: {{ err.message }}
-    </p>
+<section class="task-list" [attr.aria-busy]="store.loading()">
+  <header class="task-list__header">
+    <h2>Listado</h2>
+    @if (!store.loading() && store.tasks().length > 0) {
+      <span class="task-list__count">{{ store.tasks().length }} tareas</span>
+    }
+  </header>
+
+  @if (store.error(); as err) {
+    <div class="task-list__status task-list__status--error" role="alert">
+      <span>Error {{ err.status }}: {{ err.message }}</span>
+      <button type="button" class="task-list__dismiss" (click)="store.dismissError()" aria-label="Cerrar error">&times;</button>
+    </div>
   }
 
-  @if (!store.loading() && !store.error()) {
+  @if (store.loading()) {
+    <ul class="task-list__items" aria-hidden="true">
+      @for (i of [1, 2, 3]; track i) {
+        <li class="task-list__skeleton"></li>
+      }
+    </ul>
+    <p class="task-list__sr" role="status">Cargando tareas...</p>
+  } @else {
     <ul class="task-list__items">
       @for (task of store.pagedTasks(); track task.id) {
         <li>
@@ -19,28 +32,45 @@
           />
         </li>
       } @empty {
-        <li class="task-list__empty">No hay tareas todavia.</li>
+        <li class="task-list__empty">
+          <p>No hay tareas todavia.</p>
+          <span>Crea una desde el formulario.</span>
+        </li>
       }
     </ul>
 
-    @if (store.tasks().length > 0) {
+    @if (store.totalPages() > 1) {
       <nav class="task-list__pager" aria-label="Paginacion">
         <button
           type="button"
+          class="task-list__pager-btn"
           (click)="store.prevPage()"
           [disabled]="store.pageIndex() === 0"
+          aria-label="Pagina anterior"
         >
-          Anterior
+          &lsaquo;
         </button>
-        <span class="task-list__pager-info">
-          Pagina {{ store.pageIndex() + 1 }} de {{ store.totalPages() }}
-        </span>
+
+        @for (p of store.pageNumbers(); track p) {
+          <button
+            type="button"
+            class="task-list__pager-btn task-list__pager-btn--num"
+            [class.is-active]="p === store.pageIndex()"
+            [attr.aria-current]="p === store.pageIndex() ? 'page' : null"
+            (click)="store.goToPage(p)"
+          >
+            {{ p + 1 }}
+          </button>
+        }
+
         <button
           type="button"
+          class="task-list__pager-btn"
           (click)="store.nextPage()"
           [disabled]="store.pageIndex() >= store.totalPages() - 1"
+          aria-label="Pagina siguiente"
         >
-          Siguiente
+          &rsaquo;
         </button>
       </nav>
     }
