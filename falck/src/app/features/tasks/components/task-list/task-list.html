@@ -1,0 +1,48 @@
+<section class="task-list" aria-busy="{{ store.loading() }}">
+  @if (store.loading()) {
+    <p class="task-list__status" role="status">Cargando tareas...</p>
+  } @else if (store.error(); as err) {
+    <p class="task-list__status task-list__status--error" role="alert">
+      Error {{ err.status }}: {{ err.message }}
+    </p>
+  }
+
+  @if (!store.loading() && !store.error()) {
+    <ul class="task-list__items">
+      @for (task of store.pagedTasks(); track task.id) {
+        <li>
+          <app-task
+            [task]="task"
+            (toggleComplete)="onToggle(task)"
+            (edit)="onEdit(task)"
+            (remove)="onRemove(task.id)"
+          />
+        </li>
+      } @empty {
+        <li class="task-list__empty">No hay tareas todavia.</li>
+      }
+    </ul>
+
+    @if (store.tasks().length > 0) {
+      <nav class="task-list__pager" aria-label="Paginacion">
+        <button
+          type="button"
+          (click)="store.prevPage()"
+          [disabled]="store.pageIndex() === 0"
+        >
+          Anterior
+        </button>
+        <span class="task-list__pager-info">
+          Pagina {{ store.pageIndex() + 1 }} de {{ store.totalPages() }}
+        </span>
+        <button
+          type="button"
+          (click)="store.nextPage()"
+          [disabled]="store.pageIndex() >= store.totalPages() - 1"
+        >
+          Siguiente
+        </button>
+      </nav>
+    }
+  }
+</section>

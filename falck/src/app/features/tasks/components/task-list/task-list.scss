@@ -1,0 +1,62 @@
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__empty {
+    text-align: center;
+    color: #8b949e;
+    font-style: italic;
+    padding: 1rem;
+    border: 1px dashed #d0d7de;
+    border-radius: 8px;
+  }
+
+  &__status {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    background: #f6f8fa;
+    color: #57606a;
+
+    &--error {
+      background: #ffebe9;
+      color: #82071e;
+    }
+  }
+
+  &__pager {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding-top: 0.5rem;
+
+    button {
+      padding: 0.4rem 0.9rem;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  &__pager-info {
+    font-size: 0.9rem;
+    color: #57606a;
+  }
+}
