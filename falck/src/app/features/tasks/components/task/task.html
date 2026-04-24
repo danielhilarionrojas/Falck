@@ -1,0 +1,48 @@
+<article class="task" [class.task--completed]="task().completed">
+  <header class="task__header">
+    <div class="task__title-row">
+      <input
+        type="checkbox"
+        class="task__toggle"
+        [checked]="task().completed"
+        [attr.aria-label]="'Marcar ' + task().title + ' como ' + (task().completed ? 'pendiente' : 'completada')"
+        (change)="toggleComplete.emit(task().id)"
+      />
+      <h3 class="task__title">{{ task().title }}</h3>
+      <span class="task__state" [attr.data-state]="state()">{{ state() }}</span>
+    </div>
+    <p class="task__description">{{ task().description }}</p>
+    <p class="task__meta">
+      <span class="task__label">Vence:</span>
+      <time [attr.datetime]="task().dueDate">{{ task().dueDate | date: 'mediumDate' }}</time>
+    </p>
+  </header>
+
+  <section class="task__notes">
+    <button
+      type="button"
+      class="task__notes-toggle"
+      [attr.aria-expanded]="expanded()"
+      (click)="toggleExpanded()"
+    >
+      {{ expanded() ? 'Ocultar' : 'Ver' }} notas ({{ task().notes.length }})
+    </button>
+
+    @if (expanded()) {
+      @if (task().notes.length > 0) {
+        <ul class="task__notes-list">
+          @for (note of task().notes; track note) {
+            <li>{{ note }}</li>
+          }
+        </ul>
+      } @else {
+        <p class="task__notes-empty">Sin notas.</p>
+      }
+    }
+  </section>
+
+  <footer class="task__actions">
+    <button type="button" (click)="edit.emit(task())">Editar</button>
+    <button type="button" class="task__danger" (click)="remove.emit(task().id)">Eliminar</button>
+  </footer>
+</article>
