@@ -1,0 +1,59 @@
+<form class="task-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+  <div class="task-form__field">
+    <label for="title">Titulo</label>
+    <input id="title" type="text" formControlName="title" autocomplete="off" />
+    @if (form.controls.title.touched && form.controls.title.invalid) {
+      <p class="task-form__error">Titulo requerido (minimo 3 caracteres).</p>
+    }
+  </div>
+
+  <div class="task-form__field">
+    <label for="description">Descripcion</label>
+    <textarea id="description" formControlName="description" rows="3"></textarea>
+    @if (form.controls.description.touched && form.controls.description.invalid) {
+      <p class="task-form__error">Descripcion requerida.</p>
+    }
+  </div>
+
+  <div class="task-form__field">
+    <label for="dueDate">Fecha limite</label>
+    <input id="dueDate" type="date" formControlName="dueDate" />
+    @if (form.controls.dueDate.touched && form.controls.dueDate.invalid) {
+      <p class="task-form__error">Fecha requerida.</p>
+    }
+  </div>
+
+  <fieldset class="task-form__notes" formArrayName="notes">
+    <legend>Notas</legend>
+    @for (note of notes.controls; track $index; let i = $index) {
+      <div class="task-form__note-row">
+        <input
+          type="text"
+          [formControlName]="i"
+          [attr.aria-label]="'Nota ' + (i + 1)"
+          placeholder="Nota {{ i + 1 }}"
+        />
+        <button
+          type="button"
+          class="task-form__note-remove"
+          [disabled]="notes.length <= 1"
+          (click)="removeNote(i)"
+          aria-label="Eliminar nota"
+        >
+          -
+        </button>
+      </div>
+      @if (note.touched && note.invalid) {
+        <p class="task-form__error">Nota no puede estar vacia.</p>
+      }
+    }
+
+    <button type="button" class="task-form__note-add" (click)="addNote()">
+      + Agregar nota
+    </button>
+  </fieldset>
+
+  <div class="task-form__actions">
+    <button type="submit" [disabled]="form.invalid">Crear tarea</button>
+  </div>
+</form>
